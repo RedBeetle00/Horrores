@@ -2,8 +2,9 @@
 
 public class PlayerMove : MonoBehaviour
 {
-    private Rigidbody2D rb; // Переменная для физического тела
+    private Rigidbody2D rb;
     private PlayerInput playerInput; // Переменная для передачи кода из одного файла в другой
+    private CheckGround checkGround;
     
     // SerializeField означает, что несмотря на private, переменную можно будет менять из инспектора юнити
     [SerializeField] private float playerSpeed; 
@@ -11,25 +12,23 @@ public class PlayerMove : MonoBehaviour
 
     public Vector2 moveAmt; // Переменная для хранения вектора движения игрока
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>(); // Получаем код из файла для ввода
-        rb = GetComponent<Rigidbody2D>(); // Получаем Rigidbody
+        checkGround = GetComponentInChildren<CheckGround>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveAmt = PlayerInput.playerInputMove.ReadValue<Vector2>(); // Получаем вектор движения игрока из скрипта PlayerInput
 
-        if (PlayerInput.playerInputJump.WasPressedThisFrame()) // Если пробел был нажат, то...
+        if (PlayerInput.playerInputJump.WasPressedThisFrame() && checkGround.isGrounded)
         {
             Jump();
         }
     }
 
-    // Обновляется каждые 50 (вроде, так сказал дипсик) кадров
     private void FixedUpdate()
     {
         Walking();
@@ -37,12 +36,11 @@ public class PlayerMove : MonoBehaviour
 
     private void Walking()
     {
-        rb.MovePosition(rb.position + Vector2.right * moveAmt.x * playerSpeed * Time.deltaTime); // Берём позицию игрока и прибавляем к ней вектор движения умноженный на скорость. Time.deltaTime делает так, что частота кадров не будет влиять на скорость перемещения
+        rb.linearVelocity = new Vector2(moveAmt.x * playerSpeed, rb.linearVelocity.y);
     }
 
     private void Jump()
     {
-        rb.AddForce(Vector2.up * jumpStrengh, ForceMode2D.Impulse); // Пытаюсь сделать прыжок, но эта хенря не работает
-        Debug.Log("Jump"); // Выводит в консоль сообщение. Использую для проверки на то, что метов вообще срабатывает
+        rb.AddForce(Vector2.up * jumpStrengh, ForceMode2D.Impulse);
     }
 }
