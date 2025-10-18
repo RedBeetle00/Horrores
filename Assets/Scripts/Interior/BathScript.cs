@@ -11,7 +11,7 @@ public class BathScript : MonoBehaviour
         if (CommonVar.isUse)
         {
             CommonVar.canMove = false;
-            rb.position = new Vector2(14.25f, -0.15f);
+            rb.position = new Vector2(14.25f, -0.15f); // Penis
             rb.linearVelocityY = 0f;
         }
     }
