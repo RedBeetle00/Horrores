@@ -1,16 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Common;
 
 public class PcScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnTriggerStay2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (CommonVar.isUse)
+        {
+            SceneManager.LoadScene("PcScene");
+        }
     }
 }
