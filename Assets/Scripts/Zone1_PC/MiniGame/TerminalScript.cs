@@ -294,7 +294,7 @@ public class TerminalScript : MonoBehaviour
                 else
                 {
                     OutputText.text += $"Collect all IPs before using this command";
-                }
+                } 
                 break;
             default:
                 Debug.Log($"Unknown command: {command}");
