@@ -1,42 +1,35 @@
+// TerminalScript.cs
 using UnityEngine;
 using UnityEngine.UI;
 using Common;
-using System.IO;
-using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class TerminalScript : MonoBehaviour
 {
     [SerializeField] private Text OutputText;
-
     public InputField InputCommand;
-    private IPsData IPs_Data;
-    private IPgenerator IPsGenerator;
+    
     private bool AnimationPlayed;
     
-    //private bool isProcessing = false;
-    private static string CurrentCommand = "";
-
-    private void AddDelay(float seconds)
-    {
-        StartCoroutine(DelayCoroutine(seconds));
-    }
-
-    private IEnumerator DelayCoroutine(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-    }
+    private IPsData IPs_Data => IPDataManager.GetIPsData();
 
     public void GetCommand()
     {
-        CurrentCommand = InputCommand.text;
+        // Теперь команда обрабатывается напрямую из InputField
     }
 
     void Start()
     {
-        IPsGenerator = FindFirstObjectByType<IPgenerator>();
-
-        LoadIPsData();
+        // Предварительная загрузка данных
+        if (!IPDataManager.HasData())
+        {
+            OutputText.text += "System ready. Type 'help' for available commands.\n";
+        }
+        else
+        {
+            OutputText.text += $"System loaded. {IPs_Data.ipAddresses.Count} IPs available.\n";
+        }
     }
 
     private IEnumerator ScanAnimation()
@@ -49,13 +42,21 @@ public class TerminalScript : MonoBehaviour
                 yield return new WaitForSeconds(0.3f);
                 OutputText.text += ".";
             }
+            OutputText.text += "]\n";
         }
-        OutputText.text += "]\n";
-        // Открываем доступ к ПЕРВОМУ IP (он уже существует)
+        
         AnimationPlayed = true;
         CommonVar.FirstIPreached = true;
-        OutputText.text += $"Detected IP!\nIP: {IPs_Data.ipAddresses[0]}\nIP automatically copied.\n";
-        GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[0];
+        
+        if (IPs_Data.ipAddresses.Count > 0)
+        {
+            OutputText.text += $"Detected IP!\nIP: {IPs_Data.ipAddresses[0]}\nIP automatically copied.\n";
+            GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[0];
+        }
+        else
+        {
+            OutputText.text += "Error: No IPs available. Generate IPs first.\n";
+        }
     }
 
     private IEnumerator DecryptAnimation()
@@ -63,10 +64,17 @@ public class TerminalScript : MonoBehaviour
         OutputText.text += "Decrypting encoded IP...\n";
         yield return new WaitForSeconds(2f);
         
-        // Открываем доступ ко ВТОРОМУ IP (он уже существует)
         CommonVar.SecondIPreached = true;
-        OutputText.text += $"IP decrypted: {IPs_Data.ipAddresses[1]}\nIP copied";
-        GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[1];
+        
+        if (IPs_Data.ipAddresses.Count > 1)
+        {
+            OutputText.text += $"IP decrypted: {IPs_Data.ipAddresses[1]}\nIP copied\n";
+            GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[1];
+        }
+        else
+        {
+            OutputText.text += "Error: Second IP not available.\n";
+        }
     }
 
     private IEnumerator FindVulnerabilityAnimation()
@@ -82,7 +90,6 @@ public class TerminalScript : MonoBehaviour
         
         OutputText.text += "Attempting SSH brute force...\n";
         
-        // Анимация подбора пароля
         string[] attempts = { "admin:12345 X", "root:password X", "guest:guest X", "user:qwerty V" };
         foreach (string attempt in attempts)
         {
@@ -93,10 +100,17 @@ public class TerminalScript : MonoBehaviour
         yield return new WaitForSeconds(1f);
         OutputText.text += "V SSH access granted!\n";
         
-        // Открываем доступ к ТРЕТЬЕМУ IP
         CommonVar.ThirdIPreached = true;
-        OutputText.text += $"Compromised server IP: {IPs_Data.ipAddresses[2]}\nIP copied.";
-        GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[2];
+        
+        if (IPs_Data.ipAddresses.Count > 2)
+        {
+            OutputText.text += $"Compromised server IP: {IPs_Data.ipAddresses[2]}\nIP copied.\n";
+            GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[2];
+        }
+        else
+        {
+            OutputText.text += "Error: Third IP not available.\n";
+        }
     }
 
     private IEnumerator ADAttackAnimation()
@@ -131,9 +145,17 @@ public class TerminalScript : MonoBehaviour
         OutputText.text += "Domain Admin privileges obtained\n";
         
         CommonVar.FourthIPreached = true;
-        OutputText.text += $"Domain Controller IP: {IPs_Data.ipAddresses[3]}\n";
-        GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[3];
-        OutputText.text += "Domain persistence established. Ready for data exfiltration.\nIP copied\n";
+        
+        if (IPs_Data.ipAddresses.Count > 3)
+        {
+            OutputText.text += $"Domain Controller IP: {IPs_Data.ipAddresses[3]}\n";
+            GUIUtility.systemCopyBuffer = IPs_Data.ipAddresses[3];
+            OutputText.text += "Domain persistence established. Ready for data exfiltration.\nIP copied\n";
+        }
+        else
+        {
+            OutputText.text += "Error: Fourth IP not available.\n";
+        }
     }
 
     private IEnumerator BruteForceAnimation()
@@ -154,7 +176,6 @@ public class TerminalScript : MonoBehaviour
             attempts++;
             OutputText.text += $"\nAttempt {attempts}/{maxAttempts}: ";
             
-            // Имитация генерации пароля
             string attempt = GenerateRandomAttempt();
             OutputText.text += $"{attempt}";
             
@@ -169,7 +190,6 @@ public class TerminalScript : MonoBehaviour
             {
                 OutputText.text += " - FAILED\n";
                 
-                // Подсказки после неудачных попыток
                 if (attempts == 2)
                     OutputText.text += "Hint: Contains special character $\n";
                 else if (attempts == 3)
@@ -182,8 +202,10 @@ public class TerminalScript : MonoBehaviour
         if (passwordFound)
         {
             OutputText.text += "\nVAULT UNLOCKED!\n";
-            OutputText.text += $"Master Password: {targetPassword}\n";
+            OutputText.text += $"Master Password: {targetPassword}\nYou won!";
             GUIUtility.systemCopyBuffer = targetPassword;
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene("GoodEnd");
         }
         else
         {
@@ -199,111 +221,80 @@ public class TerminalScript : MonoBehaviour
         return attempts[Random.Range(0, attempts.Length)];
     }
 
-    private void LoadIPsData()
-    {
-        string filePath = Path.Combine(Application.persistentDataPath, "generated_ips.json");;
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-            IPs_Data = JsonUtility.FromJson<IPsData>(json);
-            Debug.Log("IPs data loaded successfully");
-        }
-    }
-
     public void ProcessCommand()
     {
-        if (string.IsNullOrEmpty(CurrentCommand))
+        string command = InputCommand.text.ToLower().Trim();
+
+        if (string.IsNullOrEmpty(command))
         {
-            Debug.LogError("CurrentCommand is null or empty!");
+            Debug.LogError("Command is null or empty!");
             return;
         }
 
-        string command = CurrentCommand.ToLower().Trim();
+        if (OutputText == null)
+        {
+            Debug.LogError("OutputText is not assigned!");
+            return;
+        }
 
         switch(command)
         {
             case "help":
-                Debug.Log("HELP");
-                if (OutputText != null)
-                    OutputText.text += "Available commands: help, scan, decrypt, clear, list_ips, exploit, kerberoast\n";
-                else
-                    Debug.LogError("OutputText is null!");
+                OutputText.text += "Available commands: help, scan, decrypt, clear, list_ips, exploit, kerberoast, getkey\n";
                 break;
             case "scan":
-                Debug.Log("SCAN");
-                if (OutputText != null)
-                    StartCoroutine(ScanAnimation());
+                StartCoroutine(ScanAnimation());
                 break;
             case "decrypt":
-                Debug.Log("DECRYPT");
-                if (OutputText != null)
-                    StartCoroutine(DecryptAnimation());
+                StartCoroutine(DecryptAnimation());
                 break;
             case "clear":
-                if (OutputText != null)
-                    OutputText.text = "";
+                OutputText.text = "";
                 break;
             case "list_ips":
-                if (OutputText != null)
+                OutputText.text += $"Collected IPs:\n";
+                
+                if (!IPDataManager.HasData())
                 {
-                    OutputText.text += $"Collected IPs:\n";
-                    
-                    if (IPs_Data?.ipAddresses == null || IPs_Data.ipAddresses.Count == 0)
-                    {
-                        OutputText.text += "No IPs available\n";
-                        break;
-                    }
-                    if (CommonVar.FirstIPreached && IPs_Data.ipAddresses.Count > 0)
-                        OutputText.text += $"{IPs_Data.ipAddresses[0]}\n";
-                    else
-                        OutputText.text += $"Not collected yet\n";
-                        
-                    if (CommonVar.SecondIPreached && IPs_Data.ipAddresses.Count > 1)
-                        OutputText.text += $"{IPs_Data.ipAddresses[1]}\n";
-                    else
-                        OutputText.text += $"Not collected yet\n";
-                        
-                    if (CommonVar.ThirdIPreached && IPs_Data.ipAddresses.Count > 2)
-                        OutputText.text += $"{IPs_Data.ipAddresses[2]}\n";
-                    else
-                        OutputText.text += $"Not collected yet\n";
-                        
-                    if (CommonVar.FourthIPreached && IPs_Data.ipAddresses.Count > 3)
-                        OutputText.text += $"{IPs_Data.ipAddresses[3]}\n";
-                    else
-                        OutputText.text += $"Not collected yet\n";
+                    OutputText.text += "No IPs available. Generate IPs first.\n";
+                    break;
                 }
+
+                OutputText.text += CommonVar.FirstIPreached && IPs_Data.ipAddresses.Count > 0 ? 
+                    $"{IPs_Data.ipAddresses[0]}\n" : "Not collected yet\n";
+                    
+                OutputText.text += CommonVar.SecondIPreached && IPs_Data.ipAddresses.Count > 1 ? 
+                    $"{IPs_Data.ipAddresses[1]}\n" : "Not collected yet\n";
+                    
+                OutputText.text += CommonVar.ThirdIPreached && IPs_Data.ipAddresses.Count > 2 ? 
+                    $"{IPs_Data.ipAddresses[2]}\n" : "Not collected yet\n";
+                    
+                OutputText.text += CommonVar.FourthIPreached && IPs_Data.ipAddresses.Count > 3 ? 
+                    $"{IPs_Data.ipAddresses[3]}\n" : "Not collected yet\n";
                 break;
             case "exploit":
-                Debug.Log("EXPLOIT");
-                if (OutputText != null)
-                    StartCoroutine(FindVulnerabilityAnimation());
+                StartCoroutine(FindVulnerabilityAnimation());
                 break;
             case "kerberoast":
-                if (OutputText != null)
-                    StartCoroutine(ADAttackAnimation());
+                StartCoroutine(ADAttackAnimation());
                 break;
             case "getkey":
                 if (CommonVar.FirstIPreached && CommonVar.SecondIPreached && CommonVar.ThirdIPreached && CommonVar.FourthIPreached)
                 {
                     CommonVar.AllIPsCollected = true;
                     OutputText.text += $"All IPs collected!\n";
-                    AddDelay(2f);
                     StartCoroutine(BruteForceAnimation());
                 }
                 else
                 {
-                    OutputText.text += $"Collect all IPs before using this command";
+                    OutputText.text += $"Collect all IPs before using this command\n";
                 } 
                 break;
             default:
-                Debug.Log($"Unknown command: {command}");
-                if (OutputText != null)
-                    OutputText.text += $"Command not found: {command}\n";
+                OutputText.text += $"Command not found: {command}\n";
                 break;
         }
 
-        if (InputCommand != null)
-            InputCommand.text = "";
+        InputCommand.text = "";
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Common;
 
 public class LOGIN_script : MonoBehaviour
 {
@@ -45,8 +46,9 @@ public class LOGIN_script : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Not cool. Username: {UsernameYN} username: {Username}, Password: {PasswordYN} password: {Password}");
+             Debug.Log($"Not cool. Username: {UsernameYN} username: {Username}, Password: {PasswordYN} password: {Password}");
         }
         Debug.Log($"TEST:USERNAME: {CurrentUserName}PASSWORD:{CurrentPassword}");
     }
+
 }

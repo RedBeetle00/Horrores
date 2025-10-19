@@ -1,13 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WindowsMenu : MonoBehaviour
+public class Lose : MonoBehaviour
 {
-    public void PlayGame()
-    {
-        SceneManager.LoadScene("PcScene");
-    }
-
     public void ExitGame()
     {
         Application.Quit();

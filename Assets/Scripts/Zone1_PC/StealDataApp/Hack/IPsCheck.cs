@@ -1,73 +1,75 @@
+// IPsCheck.cs
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
 using Common;
 
 public class IPsCheck : MonoBehaviour
 {
     public InputField InputIP;
 
-    private IPsData IPs_Data;
-    private IPgenerator IP_generator;
-    private static string CurrentIP;
+    private IPsData IPs_Data => IPDataManager.GetIPsData();
 
     public void GetUserIP()
     {
-        CurrentIP = InputIP.text;
-        Debug.Log($"{CurrentIP}");
+        // Теперь IP обрабатывается напрямую из InputField
     }
 
     public void CheckMatchesIP()
     {
-        // Загружаем данные из JSON файла
-        string filePath = System.IO.Path.Combine(Application.persistentDataPath, "generated_ips.json");
-        if (System.IO.File.Exists(filePath))
+        string currentIP = InputIP.text;
+
+        if (string.IsNullOrEmpty(currentIP))
         {
-            string json = System.IO.File.ReadAllText(filePath);
-            IPs_Data = JsonUtility.FromJson<IPsData>(json);
-            
-            // Проверяем совпадение с ПЕРВЫМ IP в списке
-            if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[0] == CurrentIP)
+            Debug.LogError("IP input is empty!");
+            return;
+        }
+
+        if (!IPDataManager.HasData())
+        {
+            Debug.LogError("No IPs data available!");
+            return;
+        }
+
+        bool matchFound = false;
+
+        for (int i = 0; i < IPs_Data.ipAddresses.Count; i++)
+        {
+            if (IPs_Data.ipAddresses[i] == currentIP)
             {
-                CommonVar.FirstIPreached = true;
-                Debug.Log($"{CommonVar.FirstIPreached}");
-            }
-            else
-            {
-                Debug.Log($"{CommonVar.FirstIPreached}");
-            }
-            if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[1] == CurrentIP)
-            {
-                CommonVar.SecondIPreached = true;
-                Debug.Log($"{CommonVar.SecondIPreached}");
-            }
-            else
-            {
-                Debug.Log($"{CommonVar.SecondIPreached}");
-            }
-            if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[2] == CurrentIP)
-            {
-                CommonVar.ThirdIPreached = true;
-                Debug.Log($"{CommonVar.ThirdIPreached}");
-            }
-            else
-            {
-                Debug.Log($"{CommonVar.ThirdIPreached}");
-            }
-            if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[3] == CurrentIP)
-            {
-                CommonVar.FourthIPreached = true;
-                Debug.Log($"{CommonVar.FourthIPreached}");
-            }
-            else
-            {
-                Debug.Log($"{CommonVar.FourthIPreached}");
+                SetIPReached(i);
+                Debug.Log($"IP {i+1} matched: {currentIP}");
+                matchFound = true;
+                break;
             }
         }
-        else
+
+        if (!matchFound)
         {
-            Debug.LogError("Файл с IP-адресами не найден!");
+            Debug.Log($"No match found for IP: {currentIP}");
         }
+    }
+
+    private void SetIPReached(int index)
+    {
+        switch (index)
+        {
+            case 0: 
+                CommonVar.FirstIPreached = true; 
+                Debug.Log($"First IP reached: {CommonVar.FirstIPreached}");
+                break;
+            case 1: 
+                CommonVar.SecondIPreached = true; 
+                Debug.Log($"Second IP reached: {CommonVar.SecondIPreached}");
+                break;
+            case 2: 
+                CommonVar.ThirdIPreached = true; 
+                Debug.Log($"Third IP reached: {CommonVar.ThirdIPreached}");
+                break;
+            case 3: 
+                CommonVar.FourthIPreached = true; 
+                Debug.Log($"Fourth IP reached: {CommonVar.FourthIPreached}");
+                break;
+        }
+        CommonVar.inDanger = true;
     }
 }
