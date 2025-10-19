@@ -40,7 +40,7 @@ public class BedScript : MonoBehaviour, IInteractable
             rb.bodyType = RigidbodyType2D.Kinematic;
             CommonVar.canMove = true;
             CommonVar.inBed = false;
-            rb.position = new Vector2(-10, -1f);
+            rb.position = new Vector2(-10, -0.8f);
         }
     }
 }

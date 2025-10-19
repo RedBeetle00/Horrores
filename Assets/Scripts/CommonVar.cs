@@ -18,6 +18,6 @@ namespace Common
         public static bool inBath;
         public static bool inBed;
 
-        public static bool inDanger = true;
+        public static bool inDanger;
     }
 }

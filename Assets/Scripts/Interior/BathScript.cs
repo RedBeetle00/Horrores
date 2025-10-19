@@ -27,7 +27,7 @@ public class BathScript : MonoBehaviour, IInteractable
         {
             CommonVar.canMove = false;
             CommonVar.inBath = true;
-            rb.position = new Vector2(14.25f, -0.15f);
+            rb.position = new Vector2(14f, 0.23f);
             rb.linearVelocityX = 0f;
             timer = 0;
         }
@@ -35,7 +35,7 @@ public class BathScript : MonoBehaviour, IInteractable
         {
             CommonVar.canMove = true;
             CommonVar.inBath = false;
-            rb.position = new Vector2(12.5f, -1f);
+            rb.position = new Vector2(12.5f, -0.8f);
         }
     }
 }
