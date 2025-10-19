@@ -32,7 +32,6 @@ public class BedScript : MonoBehaviour, IInteractable
             CommonVar.canMove = false;
             CommonVar.inBed = true;
             rb.position = new Vector2(-12f, -2.5f);
-            rb.linearVelocityX = 0f;
             timer = 0;
         }
         if (CommonVar.inBed && timer > 3)

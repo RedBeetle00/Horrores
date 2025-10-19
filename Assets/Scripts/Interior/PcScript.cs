@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Common;
 
 public class PcScript : MonoBehaviour, IInteractable
 {
@@ -25,11 +26,15 @@ public class PcScript : MonoBehaviour, IInteractable
     }
     private void FixedUpdate()
     {
-        //timer += 10 * Time.deltaTime;
-        //if (timer == 100)
-        //{
-            ShowEnemy();
-        //}
+        if (CommonVar.inDanger)
+        {
+            timer += 2 * Time.deltaTime;
+            Debug.Log(timer);
+            if (timer > 10)
+            {
+                ShowEnemy();
+            }
+        }
     }
     private void ShowEnemy()
     {

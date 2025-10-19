@@ -40,7 +40,7 @@ public class PlayerMove : MonoBehaviour
         if (CommonVar.canMove == false && CommonVar.inShkaf)
         {
             spriteRenderer.enabled = false;
-            stopPlayer();
+            //stopPlayer();
         }
     }
 

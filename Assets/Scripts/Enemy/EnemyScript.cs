@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     private void Awake()
     {
         enemy.SetActive(false);
+        rb.position = new Vector2(-2, -1);
     }
 
     private void FixedUpdate()
@@ -40,6 +41,7 @@ public class EnemyScript : MonoBehaviour
         }
         if (timer > 400)
         {
+            CommonVar.inDanger = false;
             enemy.SetActive(false);
         }
     }
