@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 
 public class IPsCheck : MonoBehaviour
 {
@@ -10,11 +11,6 @@ public class IPsCheck : MonoBehaviour
     private IPsData IPs_Data;
     private IPgenerator IP_generator;
     private static string CurrentIP;
-
-    private static bool FirstIPreached;
-    private static bool SecondIPreached;
-    private static bool ThirdIPreached;
-    private static bool FourthIPreached;
 
     public void GetUserIP()
     {
@@ -34,39 +30,39 @@ public class IPsCheck : MonoBehaviour
             // Проверяем совпадение с ПЕРВЫМ IP в списке
             if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[0] == CurrentIP)
             {
-                FirstIPreached = true;
-                Debug.Log($"{FirstIPreached}");
+                CommonVar.FirstIPreached = true;
+                Debug.Log($"{CommonVar.FirstIPreached}");
             }
             else
             {
-                Debug.Log($"{FirstIPreached}");
+                Debug.Log($"{CommonVar.FirstIPreached}");
             }
             if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[1] == CurrentIP)
             {
-                SecondIPreached = true;
-                Debug.Log($"{SecondIPreached}");
+                CommonVar.SecondIPreached = true;
+                Debug.Log($"{CommonVar.SecondIPreached}");
             }
             else
             {
-                Debug.Log($"{SecondIPreached}");
+                Debug.Log($"{CommonVar.SecondIPreached}");
             }
             if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[2] == CurrentIP)
             {
-                ThirdIPreached = true;
-                Debug.Log($"{ThirdIPreached}");
+                CommonVar.ThirdIPreached = true;
+                Debug.Log($"{CommonVar.ThirdIPreached}");
             }
             else
             {
-                Debug.Log($"{ThirdIPreached}");
+                Debug.Log($"{CommonVar.ThirdIPreached}");
             }
             if (IPs_Data.ipAddresses.Count > 0 && IPs_Data.ipAddresses[3] == CurrentIP)
             {
-                FourthIPreached = true;
-                Debug.Log($"{FourthIPreached}");
+                CommonVar.FourthIPreached = true;
+                Debug.Log($"{CommonVar.FourthIPreached}");
             }
             else
             {
-                Debug.Log($"{FourthIPreached}");
+                Debug.Log($"{CommonVar.FourthIPreached}");
             }
         }
         else
