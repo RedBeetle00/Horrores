@@ -9,7 +9,10 @@ public class IPsCheck : MonoBehaviour
     private static bool ThirdIPreached;
     private static bool FourthIPreached;
 
-    
+    public void CheckMathcesIP()
+    {
+        
+    }
 
 
 }
