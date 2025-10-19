@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Common;
 
 public class EnemyScript : MonoBehaviour
@@ -22,7 +23,7 @@ public class EnemyScript : MonoBehaviour
     {
         if (!CommonVar.inBed && !CommonVar.inShkaf && !CommonVar.inBath && timer > 10)
         {
-            Debug.Log("You Dead");
+            SceneManager.LoadScene("Looser");
         }
 
         if (timer > 0 && timer <= 80)
