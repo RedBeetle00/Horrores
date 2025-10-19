@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace Common
@@ -16,5 +15,9 @@ namespace Common
         public static bool canMove = true;
 
         public static bool inShkaf;
+        public static bool inBath;
+        public static bool inBed;
+
+        public static bool inDanger = true;
     }
 }

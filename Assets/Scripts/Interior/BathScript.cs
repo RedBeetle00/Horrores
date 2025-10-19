@@ -1,18 +1,41 @@
 using UnityEngine;
 using Common;
-using System.Runtime.CompilerServices;
 
-public class BathScript : MonoBehaviour
+public class BathScript : MonoBehaviour, IInteractable
 {
     public Rigidbody2D rb;
+    private bool hit;
+    private int timer;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void FixedUpdate()
     {
-        if (CommonVar.isUse)
+        timer += 1;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        hit = true;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        hit = false;
+    }
+
+    public void Interact()
+    {
+        if (hit && !CommonVar.inBath)
         {
             CommonVar.canMove = false;
-            rb.position = new Vector2(14.25f, -0.15f); // Penis
-            rb.linearVelocityY = 0f;
+            CommonVar.inBath = true;
+            rb.position = new Vector2(14.25f, -0.15f);
+            rb.linearVelocityX = 0f;
+            timer = 0;
+        }
+        if (CommonVar.inBath && timer > 3)
+        {
+            CommonVar.canMove = true;
+            CommonVar.inBath = false;
+            rb.position = new Vector2(12.5f, -1f);
         }
     }
 }
