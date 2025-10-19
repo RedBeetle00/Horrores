@@ -3,7 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class PcScript : MonoBehaviour, IInteractable
 {
+    public GameObject enemy;
     private bool hit;
+    private float timer;
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,5 +22,17 @@ public class PcScript : MonoBehaviour, IInteractable
         {
             SceneManager.LoadScene("PcScene");
         }
+    }
+    private void FixedUpdate()
+    {
+        //timer += 10 * Time.deltaTime;
+        //if (timer == 100)
+        //{
+            ShowEnemy();
+        //}
+    }
+    private void ShowEnemy()
+    {
+        enemy.SetActive(true);
     }
 }
