@@ -27,9 +27,8 @@ public class IPgenerator : MonoBehaviour
             string ip = $"{random.Next(1, 255)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(1, 255)}";
             data.ipAddresses.Add(ip);
             Debug.Log($"IP {i+1}: {ip}");
-
-            SaveToJson(data);
         }
+        SaveToJson(data);
     }
 
     private void SaveToJson(IPsData data)
