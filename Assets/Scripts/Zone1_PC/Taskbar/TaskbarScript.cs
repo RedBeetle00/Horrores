@@ -8,7 +8,11 @@ public class TaskbarScript : MonoBehaviour
 
     [SerializeField] public GameObject StartMenu;
     private float timer;
-
+    public void Start()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
     public void OpenCloseMenu()
     {
         StartMenu.SetActive(!StartMenu.activeSelf);

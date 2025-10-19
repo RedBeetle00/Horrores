@@ -41,6 +41,7 @@ public class LOGIN_script : MonoBehaviour
 
         if (UsernameYN && PasswordYN)
         {
+            CommonVar.usedbefore = true;
             LogInSystem.SetActive(false);
             HackingField.SetActive(true);
         }

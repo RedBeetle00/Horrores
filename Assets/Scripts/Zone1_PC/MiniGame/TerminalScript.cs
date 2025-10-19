@@ -240,7 +240,7 @@ public class TerminalScript : MonoBehaviour
         switch(command)
         {
             case "help":
-                OutputText.text += "Available commands: help, scan, decrypt, clear, list_ips, exploit, kerberoast, getkey\n";
+                OutputText.text += "Available commands: help, clear, list_ips,\nЗапускать в последовательности:\nscan, decrypt, exploit, kerberoast, getkey\n";
                 break;
             case "scan":
                 StartCoroutine(ScanAnimation());

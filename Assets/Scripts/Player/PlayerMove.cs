@@ -16,6 +16,8 @@ public class PlayerMove : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>(); // Получаем код из файла для ввода
         rb = GetComponent<Rigidbody2D>();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -40,7 +42,6 @@ public class PlayerMove : MonoBehaviour
         if (CommonVar.canMove == false && CommonVar.inShkaf)
         {
             spriteRenderer.enabled = false;
-            //stopPlayer();
         }
     }
 
@@ -55,10 +56,5 @@ public class PlayerMove : MonoBehaviour
     private void Walking()
     {
         rb.linearVelocity = new Vector2(moveAmt.x * playerSpeed, rb.linearVelocity.y);
-    }
-
-    private void stopPlayer()
-    {
-        rb.linearVelocityX = 0f;
     }
 }
