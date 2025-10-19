@@ -6,6 +6,7 @@ public class EnemyScript : MonoBehaviour
 {
     public Rigidbody2D rb;
     public GameObject enemy;
+    public SpriteRenderer sp;
     private float timer;
 
     private void Awake()
@@ -22,6 +23,14 @@ public class EnemyScript : MonoBehaviour
 
     private void Update()
     {
+        if (rb.linearVelocityX < 0)
+        {
+            sp.flipX = true;
+        }
+        if (rb.linearVelocityX >= 0)
+        {
+            sp.flipX = false;
+        }
         if (!CommonVar.inBed && !CommonVar.inShkaf && !CommonVar.inBath && timer > 10)
         {
             SceneManager.LoadScene("Looser");
