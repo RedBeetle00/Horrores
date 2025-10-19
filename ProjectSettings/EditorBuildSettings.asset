@@ -17,6 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Looser.unity
     guid: 9587d7762e59064469afdba7d41588ef
+    path: Assets/Scenes/OutPC.unity
+    guid: 04d2e961cecee9b4ba0d3519681abf7d
+  - enabled: 0
+    path: Assets/Scenes/MainScene.unity
+    guid: 5600bc20b201df813b0d73f0a20501a6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
