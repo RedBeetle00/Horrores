@@ -13,7 +13,6 @@ public class HackingScript : MonoBehaviour
     public void checkIPs()
     {
         Debug.Log($"{IPsDatA.ipAddresses.Count}");
-
     }
     
 }

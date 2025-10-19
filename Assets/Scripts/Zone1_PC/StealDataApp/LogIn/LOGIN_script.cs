@@ -11,6 +11,7 @@ public class LOGIN_script : MonoBehaviour
 
     private const string UsernameConst = "Hecker";
     private const string PasswordConst = "OpUiJfVvvMwRe";
+
     private static string CurrentPassword;
     private static string CurrentUserName;
     private static bool PasswordYN; // password yes or no
