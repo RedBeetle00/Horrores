@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TaskbarScript : MonoBehaviour
 {
@@ -9,5 +10,10 @@ public class TaskbarScript : MonoBehaviour
     public void OpenCloseMenu()
     {
         StartMenu.SetActive(!StartMenu.activeSelf);
+    }
+
+    public void LeavePC()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
