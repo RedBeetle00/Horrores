@@ -1,9 +1,10 @@
-using UnityEngine;
 using Common;
+using UnityEngine;
 
-public class BathScript : MonoBehaviour, IInteractable
+public class BedScript : MonoBehaviour, IInteractable
 {
     public Rigidbody2D rb;
+    public CapsuleCollider2D cl;
     private bool hit;
     private int timer;
 
@@ -23,19 +24,24 @@ public class BathScript : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (hit && !CommonVar.inBath)
+        if (hit && !CommonVar.inBed)
         {
+            cl.enabled = false; 
+            rb.bodyType = RigidbodyType2D.Static;
+            
             CommonVar.canMove = false;
-            CommonVar.inBath = true;
-            rb.position = new Vector2(14.25f, -0.15f);
+            CommonVar.inBed = true;
+            rb.position = new Vector2(-12f, -2.5f);
             rb.linearVelocityX = 0f;
             timer = 0;
         }
-        if (CommonVar.inBath && timer > 3)
+        if (CommonVar.inBed && timer > 3)
         {
+            cl.enabled = true;
+            rb.bodyType = RigidbodyType2D.Kinematic;
             CommonVar.canMove = true;
-            CommonVar.inBath = false;
-            rb.position = new Vector2(12.5f, -1f);
+            CommonVar.inBed = false;
+            rb.position = new Vector2(-10, -1f);
         }
     }
 }

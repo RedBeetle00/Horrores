@@ -1,12 +1,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Common;
 
-public class PcScript : MonoBehaviour
+public class PcScript : MonoBehaviour, IInteractable
 {
-    public void OnTriggerStay2D(Collider2D collision)
+    private bool hit;
+
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (CommonVar.isUse)
+        hit = true;
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        hit = false;
+    }
+
+    public void Interact()
+    {
+        if (hit)
         {
             SceneManager.LoadScene("PcScene");
         }

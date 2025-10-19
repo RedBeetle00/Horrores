@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using Common;
-using System.ComponentModel.Design;
 
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] private float playerSpeed;
+    public Vector2 moveAmt;
+    private float hori;
+
     private Rigidbody2D rb;
     private PlayerInput playerInput; // Переменная для передачи кода из одного файла в другой
     public SpriteRenderer spriteRenderer;
     public Animator animator;
-
-    private float hori;
-    
-    [SerializeField] private float playerSpeed;
-
-    public Vector2 moveAmt;
 
     void Awake()
     {
@@ -24,9 +21,8 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         moveAmt = PlayerInput.playerInputMove.ReadValue<Vector2>();
-        
+
         hori = moveAmt.x;
-        
         animator.SetFloat("Gori", Mathf.Abs(hori));
         if (moveAmt.x < 0)
         {
@@ -35,16 +31,6 @@ public class PlayerMove : MonoBehaviour
         if (moveAmt.x > 0)
         {
             spriteRenderer.flipX = false;
-        }
-
-
-        if (PlayerInput.playerInputUse.WasPressedThisFrame()/* && CommonVar.isUse == false*/)
-        {
-            CommonVar.isUse = true;
-        }
-        if (PlayerInput.playerInputUnUse.WasPressedThisFrame()/* && CommonVar.isUse == true*/)
-        {
-            CommonVar.isUse = false;
         }
 
         if (CommonVar.canMove)
