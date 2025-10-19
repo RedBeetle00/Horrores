@@ -41,7 +41,7 @@ public class ShkafScript : MonoBehaviour, IInteractable
         rb.bodyType = RigidbodyType2D.Static;
         CommonVar.canMove = false;
         CommonVar.inShkaf = true;
-        rb.position = new Vector2(3f, -1f);
+        rb.position = new Vector2(1.65f, -0.8f);
     }
     public void GoOutShkav()
     {
