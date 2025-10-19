@@ -22,7 +22,7 @@ public class IPgenerator : MonoBehaviour
         data.ipAddresses = new List<string>();
         Debug.Log($"{data.generationTime}");
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 4; i++)
         {
             string ip = $"{random.Next(1, 255)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(1, 255)}";
             data.ipAddresses.Add(ip);

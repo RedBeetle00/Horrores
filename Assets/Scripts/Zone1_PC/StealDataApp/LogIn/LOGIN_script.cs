@@ -3,19 +3,20 @@ using UnityEngine.UI;
 
 public class LOGIN_script : MonoBehaviour
 {
+    private string Password;
+    private string Username;
+
     public InputField LogInFieldUsername;
     public InputField LogInFieldPassword;
 
     [SerializeField] public GameObject LogInSystem;
     [SerializeField] public GameObject HackingField;
 
-    private const string UsernameConst = "Hecker";
-    private const string PasswordConst = "OpUiJfVvvMwRe";
-
     private static string CurrentPassword;
     private static string CurrentUserName;
     private static bool PasswordYN; // password yes or no
     private static bool UsernameYN; // username yes or no
+
 
     public void GetUsernameText()
     {
@@ -31,8 +32,11 @@ public class LOGIN_script : MonoBehaviour
 
     public void Check()
     {
-        PasswordYN = (CurrentPassword == PasswordConst);
-        UsernameYN = (CurrentUserName == UsernameConst);
+        Password = PasswordGenerator.CurrentPassword;
+        Username = UserNameGenerator.CurrentUserName;
+
+        PasswordYN = (CurrentPassword == Password);
+        UsernameYN = (CurrentUserName == Username);
 
         if (UsernameYN && PasswordYN)
         {
@@ -41,7 +45,7 @@ public class LOGIN_script : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Not cool. Username: {UsernameYN}, Password: {PasswordYN}");
+            Debug.Log($"Not cool. Username: {UsernameYN} username: {Username}, Password: {PasswordYN} password: {Password}");
         }
         Debug.Log($"TEST:USERNAME: {CurrentUserName}PASSWORD:{CurrentPassword}");
     }
