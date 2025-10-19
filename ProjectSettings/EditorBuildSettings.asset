@@ -10,18 +10,16 @@ EditorBuildSettings:
     guid: a4b9bd7d3b2b39042bcc73db726a2a2c
   - enabled: 1
     path: Assets/Scenes/OutPC.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    guid: 04d2e961cecee9b4ba0d3519681abf7d
   - enabled: 1
     path: Assets/Scenes/PcScene.unity
     guid: 8f4261b9569f048319d4567df4f12c93
   - enabled: 1
     path: Assets/Scenes/Looser.unity
     guid: 9587d7762e59064469afdba7d41588ef
-    path: Assets/Scenes/OutPC.unity
-    guid: 04d2e961cecee9b4ba0d3519681abf7d
-  - enabled: 0
-    path: Assets/Scenes/MainScene.unity
-    guid: 5600bc20b201df813b0d73f0a20501a6
+  - enabled: 1
+    path: Assets/Scenes/GoodEnd.unity
+    guid: f729a1bae4db2230a9075c74ee652295
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

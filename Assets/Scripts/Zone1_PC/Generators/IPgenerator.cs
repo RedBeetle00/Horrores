@@ -1,15 +1,7 @@
+// IPgenerator.cs
 using UnityEngine;
 using System;
-using System.IO;
 using System.Collections.Generic;
-
-
-[System.Serializable]
-public class IPsData
-{
-    public string generationTime;
-    public List<string> ipAddresses;
-}
 
 public class IPgenerator : MonoBehaviour
 {
@@ -20,24 +12,32 @@ public class IPgenerator : MonoBehaviour
         IPsData data = new IPsData();
         data.generationTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         data.ipAddresses = new List<string>();
-        Debug.Log($"{data.generationTime}");
+        
+        Debug.Log($"Generating IPs at: {data.generationTime}");
 
         for (int i = 0; i < 4; i++)
         {
-            string ip = $"{random.Next(1, 255)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(1, 255)}";
+            string ip = GenerateInvalidIP();
             data.ipAddresses.Add(ip);
             Debug.Log($"IP {i+1}: {ip}");
         }
-        SaveToJson(data);
-    }
-
-    private void SaveToJson(IPsData data)
-    {
-        string json = JsonUtility.ToJson(data, true);
-        string filePath = Path.Combine(Application.persistentDataPath, "generated_ips.json");
-        Debug.Log($"{filePath}");
         
-        File.WriteAllText(filePath, json);
+        IPDataManager.SaveIPsData(data);
     }
 
+    private string GenerateInvalidIP()
+    {
+        string[] invalidPatterns = {
+            $"{random.Next(256, 999)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}", // Первый октет > 255
+            $"{random.Next(0, 256)}.{random.Next(256, 999)}.{random.Next(0, 256)}.{random.Next(0, 256)}", // Второй октет > 255
+            $"{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(256, 999)}.{random.Next(0, 256)}", // Третий октет > 255
+            $"{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(256, 999)}", // Четвертый октет > 255
+            $"{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(1, 100)}", // 5 октетов
+            $"{random.Next(0, 256)}.{random.Next(0, 256)}", // Только 2 октета
+            $"{-random.Next(1, 100)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}", // Отрицательный октет
+            $"{random.Next(0, 256)}.{random.Next(0, 256)}.{random.Next(0, 256)}.{-random.Next(1, 100)}", // Отрицательный последний октет
+        };
+        
+        return invalidPatterns[random.Next(0, invalidPatterns.Length)];
+    }
 }
